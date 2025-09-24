@@ -46,12 +46,6 @@ git clone https://github.com/your-username/teledoctor.git
 cd teledoctor
 ```
 
-### 2️⃣ Create Virtual Environment  
-```bash
-python -m venv venv
-source venv/bin/activate   # Mac/Linux
-venv\Scripts\activate      # Windows
-```
 
 ### 3️⃣ Install Dependencies  
 ```bash
