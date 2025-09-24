@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="card">
+        <div class="card-header bg-primary text-white">
+            <h4>Available Doctors</h4>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                {% for doctor in doctors %}
+                <a href="/book?doctor_id={{ doctor.id }}" 
+                   class="list-group-item list-group-item-action">
+                    <h5>Dr. {{ doctor.name }}</h5>
+                    <p class="mb-0">{{ doctor.specialty }}</p>
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Symptom Checker</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div class="mb-3">
+                    <label class="form-label">Enter Symptoms (comma separated)</label>
+                    <input type="text" 
+                           class="form-control" 
+                           name="symptoms" 
+                           placeholder="e.g., headache, fever, cough"
+                           required>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Age</label>
+                        <input type="number" 
+                               class="form-control" 
+                               name="age" 
+                               min="1" 
+                               max="120">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Gender</label>
+                        <select class="form-select" name="gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">
+                    <i class="bi bi-heart-pulse"></i> Analyze Symptoms
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

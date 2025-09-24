@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Set Availability Slots</h4>
+        </div>
+        <div class="card-body">
+            <form method="POST">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div class="mb-3">
+                    <label class="form-label">Start Time (UTC)</label>
+                    <input type="datetime-local" 
+                           name="start_time" 
+                           class="form-control" 
+                           min="{{ min_date }}"
+                           step="900"  <!-- 15 minute increments -->
+                           required>
+                    <div class="form-text">Earliest available: {{ min_date }}</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">End Time (UTC)</label>
+                    <input type="datetime-local" 
+                           name="end_time" 
+                           class="form-control" 
+                           min="{{ min_date }}"
+                           step="900"
+                           required>
+                    <div class="form-text">Minimum slot duration: 30 minutes</div>
+                </div>
+                
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-calendar-plus"></i> Add Availability
+                    </button>
+                    <a href="/doctor-dashboard" class="btn btn-secondary">
+                        <i class="bi bi-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Existing Slots Section -->
+    {% if slots %}
+    <div class="card mt-4">
+        <div class="card-header bg-info text-white">
+            <h5 class="mb-0">Your Existing Slots</h5>
+        </div>
+        <div class="card-body">
+            <div class="list-group">
+                {% for slot in slots %}
+                <div class="list-group-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <span class="badge bg-{{ 'success' if slot.status == 'available' else 'secondary' }}">
+                                {{ slot.status|capitalize }}
+                            </span>
+                            {{ slot.start_time.strftime('%Y-%m-%d %H:%M') }} UTC 
+                            to 
+                            {{ slot.end_time.strftime('%H:%M') }} UTC
+                        </div>
+                        <small class="text-muted">
+                            Duration: {{ (slot.end_time - slot.start_time).seconds//3600 }}h 
+                            {{ ((slot.end_time - slot.start_time).seconds//60)%60 }}m
+                        </small>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<!-- Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+{% endblock %}

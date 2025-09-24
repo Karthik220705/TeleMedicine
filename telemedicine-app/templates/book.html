@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card mx-auto" style="max-width: 800px;">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Book Appointment</h3>
+    </div>
+    <div class="card-body">
+        <form method="POST">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            
+            <div class="mb-4">
+                <label class="form-label">Select Doctor:</label>
+                <select name="doctor_id" class="form-select" required 
+                        onchange="window.location.href='/book?doctor_id=' + this.value">
+                    <option value="">Choose a doctor...</option>
+                    {% for doctor in doctors %}
+                    <option value="{{ doctor.id }}" {% if doctor.id == selected_doctor_id|int %}selected{% endif %}>
+                        Dr. {{ doctor.name }} {% if doctor.specialty %}- {{ doctor.specialty }}{% endif %}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            {% if slots %}
+            <div class="mb-4">
+                <h5>Available Time Slots</h5>
+                <div class="list-group">
+                    {% for slot in slots %}
+                    <label class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <input type="radio" 
+                                       name="availability_id" 
+                                       value="{{ slot.id }}" 
+                                       required>
+                                {{ slot.start_time.strftime('%Y-%m-%d %H:%M') }} UTC 
+                                to 
+                                {{ slot.end_time.strftime('%H:%M') }} UTC
+                                <br>
+                                <small class="text-muted">
+                                    Duration: {{ ((slot.end_time - slot.start_time).seconds // 3600) }}h 
+                                    {{ ((slot.end_time - slot.start_time).seconds % 3600) // 60 }}m
+                                </small>
+                            </div>
+                        </div>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="d-grid">
+                <button type="submit" class="btn btn-primary btn-lg">
+                    Confirm Appointment
+                </button>
+            </div>
+            {% else %}
+                {% if selected_doctor_id %}
+                <div class="alert alert-warning">
+                    No available slots for selected doctor
+                </div>
+                {% else %}
+                <div class="alert alert-info">
+                    Select a doctor to see available time slots
+                </div>
+                {% endif %}
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}

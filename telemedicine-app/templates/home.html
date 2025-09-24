@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row align-items-center py-5">
+        <div class="col-md-6">
+            <h1 class="display-4 mb-4">Virtual Healthcare Portal</h1>
+            <div class="dashboard-selection">
+                <h3 class="mb-3">Access Your Dashboard</h3>
+                <div class="d-grid gap-3">
+                    <a href="/patient-login" class="btn btn-primary btn-lg">Patient Dashboard</a>
+                    <a href="/doctor-login" class="btn btn-secondary btn-lg">Doctor Dashboard</a>
+                </div>
+            </div>
+            <div class="mt-4">
+                <p>New user? <a href="/register">Register here</a></p>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <img src="{{ url_for('static', filename='images/telemedicine.jpg') }}" 
+                 alt="Healthcare illustration" 
+                 class="img-fluid rounded-3 shadow">
+        </div>
+    </div>
+</div>
+{% endblock %}
